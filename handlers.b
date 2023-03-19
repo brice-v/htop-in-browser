@@ -12,14 +12,21 @@ fun realtime_cpus(ws) {
     var sub = pubsub.subscribe('/realtime/cpus')
     for (true) {
         val topic_msg = sub.recv();
+        #println('ws #{ws} received = #{topic_msg}')
         match topic_msg {
             {topic: '/realtime/cpus', msg: _} => {
-                ws.send(topic_msg.msg);
+                try {
+                    ws.send(topic_msg.msg);
+                } catch (e) {
+                    println("ws send failed err=#{e}. (probably closed by client) unsubscribing and returning null...");
+                    sub.unsubscribe();
+                    return null;
+                }
             },
             _ => {
                 println("exiting /realtime/cpus");
                 sub.unsubscribe();
-                return NULL;
+                return null;
             },
         }
     }
