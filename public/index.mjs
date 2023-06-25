@@ -1,6 +1,5 @@
 import { html, render } from './preact.js'
 
-
 // const wsUrl = `${import.meta.url.replace("http", "ws")}/ws`
 // const ws = new WebSocket(wsUrl);
 
